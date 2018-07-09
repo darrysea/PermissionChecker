@@ -6,7 +6,7 @@ import android.widget.Toast
 import kr.co.darrysea.checker.PermissionChecker
 import kr.co.darrysea.checker.item.PermissionItem
 
-class MainActivity : Activity() {
+internal class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
