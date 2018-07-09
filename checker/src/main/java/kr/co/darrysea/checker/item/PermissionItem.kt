@@ -26,6 +26,7 @@ enum class PermissionItem {
     BODY_SENSORS,
 
     SEND_SMS,
+    READ_SMS,
     RECEIVE_SMS,
     RECEIVE_WAP_PUSH,
     RECEIVE_MMS,
