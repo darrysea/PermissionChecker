@@ -124,13 +124,13 @@ class PermissionCheckerActivity : Activity() {
             }
 
         } catch (e: Exception) {
+            finish()
+
             e.message?.let {
                 mPermissionListener?.onError(it)
             } ?: run {
                 mPermissionListener?.onError(mContext.resources.getString(R.string.etc_error))
             }
-
-            finish()
         }
     }
 
@@ -149,8 +149,8 @@ class PermissionCheckerActivity : Activity() {
                 if (moveSetting) {
                     sendAppDetailsSettingsDialog()
                 } else {
-                    mPermissionListener?.onDenied()
                     finish()
+                    mPermissionListener?.onDenied()
                 }
             }
         }
@@ -174,9 +174,9 @@ class PermissionCheckerActivity : Activity() {
                 dialog.dismiss()
             }
             setNegativeButton(mContext.resources.getString(R.string.close)) { dialog, _ ->
-                mPermissionListener?.onDenied()
                 dialog.dismiss()
                 this@PermissionCheckerActivity.finish()
+                mPermissionListener?.onDenied()
             }
             show()
         }
