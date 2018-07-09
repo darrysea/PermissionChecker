@@ -30,8 +30,10 @@ internal object Utils {
         }
     }
 
-    fun deniedCheck(activity: Activity, permission: String): Boolean =
-            ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
+    fun deniedCheck(activity: Activity, permission: String): Boolean {
+        return ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
+    }
+
 
     fun getPermission(permission: PermissionItem): String {
         return when (permission) {

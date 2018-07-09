@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
@@ -93,22 +94,33 @@ class PermissionCheckerActivity : Activity() {
                     list[index] = deniedList[index]
                 }
 
-                var isDenied = false
+                ActivityCompat.requestPermissions(mContext, list, PERMISSION_REQUEST_CODE)
 
-                for (data in list) {
-                    data?.let {
-                        if (!deniedCheck(mContext, it)) {
-                            isDenied = true
-                        }
-                    } ?: run {
-                        throw Exception()
-                    }
-                }
 
-                if (isDenied)
-                    sendAppDetailsSettingsDialog()
-                else
-                    ActivityCompat.requestPermissions(mContext, list, PERMISSION_REQUEST_CODE)
+//                val list: Array<String?> = arrayOfNulls(deniedList.size)
+//
+//                for (index in 0 until deniedList.size) {
+//                    list[index] = deniedList[index]
+//                }
+//
+//                var isDenied = false
+//
+//                for (data in list) {
+//                    data?.let {
+//                        Utils.debugLog("deniedCheck : " + deniedCheck(mContext, it) + " ? permission : " + it)
+//
+//                        if (deniedCheck(mContext, it)) {
+//                            isDenied = true
+//                        }
+//                    } ?: run {
+//                        throw Exception()
+//                    }
+//                }
+//
+//                if (isDenied)
+//                    sendAppDetailsSettingsDialog()
+//                else
+//                    ActivityCompat.requestPermissions(mContext, list, PERMISSION_REQUEST_CODE)
             }
 
         } catch (e: Exception) {
@@ -146,7 +158,13 @@ class PermissionCheckerActivity : Activity() {
 
 
     private fun sendAppDetailsSettingsDialog() {
-        AlertDialog.Builder(ContextThemeWrapper(mContext, android.R.style.Theme_Material_Light_Dialog_Alert)).apply {
+        var resID = android.R.style.Theme_DeviceDefault_Light_Dialog
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            resID = android.R.style.Theme_Material_Light_Dialog_Alert
+        }
+
+        AlertDialog.Builder(ContextThemeWrapper(mContext, resID)).apply {
             setMessage(mSettingDialogMessage)
             setCancelable(false)
             setPositiveButton(mContext.resources.getString(R.string.setting)) { dialog, _ ->
