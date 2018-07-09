@@ -23,7 +23,7 @@ import kr.co.darrysea.checker.etc.Utils.SETTING_REQUEST_CODE
 import kr.co.darrysea.checker.etc.Utils.deniedCheck
 import kr.co.darrysea.checker.etc.Utils.mPermissionListener
 
-class PermissionCheckerActivity : Activity() {
+internal class PermissionCheckerActivity : Activity() {
 
     private val mContext = this
     private lateinit var mSettingDialogMessage: String
