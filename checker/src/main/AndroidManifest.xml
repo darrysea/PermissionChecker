@@ -5,7 +5,7 @@
         <activity
             android:name=".PermissionCheckerActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            android:theme="@style/PermissionCheckerTheme">
         </activity>
     </application>
 </manifest>
