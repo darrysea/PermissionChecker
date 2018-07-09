@@ -59,6 +59,7 @@ internal object Utils {
                 "VERSION.SDK_INT < KITKAT_WATCH"
             }
             PermissionItem.SEND_SMS -> Manifest.permission.SEND_SMS
+            PermissionItem.READ_SMS -> Manifest.permission.READ_SMS
             PermissionItem.RECEIVE_SMS -> Manifest.permission.RECEIVE_SMS
             PermissionItem.RECEIVE_WAP_PUSH -> Manifest.permission.RECEIVE_WAP_PUSH
             PermissionItem.RECEIVE_MMS -> Manifest.permission.RECEIVE_MMS
@@ -66,5 +67,4 @@ internal object Utils {
             PermissionItem.WRITE_EXTERNAL_STORAGE -> Manifest.permission.WRITE_EXTERNAL_STORAGE
         }
     }
-
 }
