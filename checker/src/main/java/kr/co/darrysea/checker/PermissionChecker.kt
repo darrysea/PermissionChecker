@@ -58,7 +58,7 @@ class PermissionChecker private constructor(builder: Builder) {
 
         init {
             mContext = context
-            mPermissions = setPermissionList(*permission)
+            mPermissions = setPermissionList(checkPermissionList(*permission))
             mListener = listener
         }
 
@@ -66,11 +66,23 @@ class PermissionChecker private constructor(builder: Builder) {
         internal var mSettingDialogInfoMessage: String = ""
         internal var mDebugMode: Boolean = false
 
-        private fun setPermissionList(vararg item: PermissionItem): Array<String?> {
+        private fun checkPermissionList(vararg item: PermissionItem): ArrayList<String> {
+            val list: ArrayList<String> = arrayListOf()
+            for (i in item) {
+                Utils.getPermission(i)?.let {
+                    list.add(it)
+                }
+            }
+
+            return list
+        }
+
+        private fun setPermissionList(item: ArrayList<String>): Array<String?> {
+
             val list: Array<String?> = arrayOfNulls(item.size)
 
             for (index in 0 until item.size) {
-                list[index] = Utils.getPermission(item[index])
+                list[index] = item[index]
             }
 
             return list

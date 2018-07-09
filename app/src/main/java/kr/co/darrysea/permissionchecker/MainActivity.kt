@@ -30,8 +30,9 @@ internal class MainActivity : Activity() {
                         Toast.makeText(this@MainActivity, "onError : $error", Toast.LENGTH_SHORT).show()
                     }
                 },
+                PermissionItem.SEND_SMS,
                 PermissionItem.CAMERA,
-                PermissionItem.SEND_SMS)
+                PermissionItem.BODY_SENSORS)
                 .debugMode(true)
                 .settingDialogInfoMessage("설정창 이동 안내 메시지")
                 .build()

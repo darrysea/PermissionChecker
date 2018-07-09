@@ -34,7 +34,7 @@ internal object Utils {
     }
 
 
-    fun getPermission(permission: PermissionItem): String {
+    fun getPermission(permission: PermissionItem): String? {
         return when (permission) {
             PermissionItem.READ_CALENDAR -> Manifest.permission.READ_CALENDAR
             PermissionItem.WRITE_CALENDAR -> Manifest.permission.WRITE_CALENDAR
@@ -52,11 +52,6 @@ internal object Utils {
             PermissionItem.ADD_VOICEMAIL -> Manifest.permission.ADD_VOICEMAIL
             PermissionItem.USE_SIP -> Manifest.permission.USE_SIP
             PermissionItem.PROCESS_OUTGOING_CALLS -> Manifest.permission.PROCESS_OUTGOING_CALLS
-            PermissionItem.BODY_SENSORS -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-                Manifest.permission.BODY_SENSORS
-            } else {
-                "VERSION.SDK_INT < KITKAT_WATCH"
-            }
             PermissionItem.SEND_SMS -> Manifest.permission.SEND_SMS
             PermissionItem.READ_SMS -> Manifest.permission.READ_SMS
             PermissionItem.RECEIVE_SMS -> Manifest.permission.RECEIVE_SMS
@@ -64,6 +59,11 @@ internal object Utils {
             PermissionItem.RECEIVE_MMS -> Manifest.permission.RECEIVE_MMS
             PermissionItem.READ_EXTERNAL_STORAGE -> Manifest.permission.READ_EXTERNAL_STORAGE
             PermissionItem.WRITE_EXTERNAL_STORAGE -> Manifest.permission.WRITE_EXTERNAL_STORAGE
+            PermissionItem.BODY_SENSORS -> if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+                Manifest.permission.BODY_SENSORS
+            } else {
+                null
+            }
         }
     }
 }

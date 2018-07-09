@@ -95,42 +95,16 @@ internal class PermissionCheckerActivity : Activity() {
                 }
 
                 ActivityCompat.requestPermissions(mContext, list, PERMISSION_REQUEST_CODE)
-
-
-//                val list: Array<String?> = arrayOfNulls(deniedList.size)
-//
-//                for (index in 0 until deniedList.size) {
-//                    list[index] = deniedList[index]
-//                }
-//
-//                var isDenied = false
-//
-//                for (data in list) {
-//                    data?.let {
-//                        Utils.debugLog("deniedCheck : " + deniedCheck(mContext, it) + " ? permission : " + it)
-//
-//                        if (deniedCheck(mContext, it)) {
-//                            isDenied = true
-//                        }
-//                    } ?: run {
-//                        throw Exception()
-//                    }
-//                }
-//
-//                if (isDenied)
-//                    sendAppDetailsSettingsDialog()
-//                else
-//                    ActivityCompat.requestPermissions(mContext, list, PERMISSION_REQUEST_CODE)
             }
 
         } catch (e: Exception) {
-            finish()
-
             e.message?.let {
                 mPermissionListener?.onError(it)
             } ?: run {
                 mPermissionListener?.onError(mContext.resources.getString(R.string.etc_error))
             }
+
+            finish()
         }
     }
 
@@ -138,26 +112,41 @@ internal class PermissionCheckerActivity : Activity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == PERMISSION_REQUEST_CODE) {
-            permissions?.let {
-                var moveSetting = false
-                for (permission in it) {
-                    // 사용자가 다시 보지 않기에 체크하고, 권한 설정을 거절한 이력이 있는 경우
-                    if (!deniedCheck(mContext, permission))
-                        moveSetting = true
+            grantResults?.let {
+                var isGrant = true
+                var isSendingSettings = false
+
+                for (result in it) {
+                    if (result != PackageManager.PERMISSION_GRANTED) {
+                        isGrant = false
+
+                        permissions?.let {
+                            for (permission in it) {
+                                if (!deniedCheck(mContext, permission)) {
+                                    isSendingSettings = true
+                                }
+                            }
+                        }
+                    }
                 }
 
-                if (moveSetting) {
-                    sendAppDetailsSettingsDialog()
-                } else {
+                if (isGrant) {
+                    mPermissionListener?.onGranted()
                     finish()
-                    mPermissionListener?.onDenied()
+                } else {
+                    if (isSendingSettings) {
+                        sendingSettingsDialog()
+                    } else {
+                        mPermissionListener?.onDenied()
+                        finish()
+                    }
                 }
             }
         }
     }
 
 
-    private fun sendAppDetailsSettingsDialog() {
+    private fun sendingSettingsDialog() {
         var resID = android.R.style.Theme_DeviceDefault_Light_Dialog
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -174,9 +163,10 @@ internal class PermissionCheckerActivity : Activity() {
                 dialog.dismiss()
             }
             setNegativeButton(mContext.resources.getString(R.string.close)) { dialog, _ ->
-                dialog.dismiss()
-                this@PermissionCheckerActivity.finish()
                 mPermissionListener?.onDenied()
+                dialog.dismiss()
+
+                this@PermissionCheckerActivity.finish()
             }
             show()
         }
