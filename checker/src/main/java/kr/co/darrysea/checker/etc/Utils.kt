@@ -10,7 +10,6 @@ import kr.co.darrysea.checker.item.PermissionItem
 
 internal object Utils {
 
-
     const val TAG: String = "PERMISSION_UTILS"
     const val PERMISSIONS = "p"
     const val MESSAGE = "m"
